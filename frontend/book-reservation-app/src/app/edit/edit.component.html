@@ -1,3 +1,26 @@
-<p>
-  edit works!
-</p>
+<p>Edycja książki</p>
+
+<div style="width:25%;float:left">
+    <p>Wprowadź dane książki</p>
+    <p>
+        <strong>Nazwa: </strong>
+        <input type="text" [(ngModel)]="book.name" />
+    </p>
+
+    <p>
+        <strong>Autor: </strong>
+        <input type="text" [(ngModel)]="book.author" />
+    </p>
+
+    <p>
+        <strong>Data wydania: </strong>
+        <input type="date" [(ngModel)]="book.releaseDate" />
+    </p>
+
+    <p>
+        <strong>Opis: </strong>
+        <textarea [(ngModel)]="book.description"></textarea>
+    </p>
+
+    <button (click)="onSubmit()">Zaktualizuj książkę</button>
+</div>

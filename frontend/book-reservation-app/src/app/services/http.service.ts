@@ -23,6 +23,6 @@ export class HttpService {
   }
 
   public updateBook = (route: string, body: Books) => {
-    return this.httpService.post(route, body);
+    return this.httpService.put(route, body);
   }
 }
