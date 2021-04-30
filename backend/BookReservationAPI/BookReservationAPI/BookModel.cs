@@ -11,6 +11,7 @@ namespace BookReservationAPI.Models
     public class BookModel
     {
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
         public string Name { get; set; }

@@ -1,6 +1,6 @@
 export interface Books {
     name: string,
     author: string,
-    release: string,
+    releaseDate: Date,
     description: string,
 }

@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BookReservationAPI.Migrations
 {
     [DbContext(typeof(BookContext))]
-    [Migration("20210429205737_BookReservationAPI.Models.BookContext")]
-    partial class BookReservationAPIModelsBookContext
+    [Migration("20210430095913_BookReservationAPI.Model.BookContextSeed")]
+    partial class BookReservationAPIModelBookContextSeed
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

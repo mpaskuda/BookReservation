@@ -1,3 +1,37 @@
-<p>
-  list works!
-</p>
+<p>Lista książek</p>
+<a [routerLink]="['/add/']">
+    <p style="padding-left: 10px;">
+      Dodaj książkę 
+  </p>
+<div class="overview-container">
+    <div *ngFor="let book of books">
+
+            <a [routerLink]="['/edit/', book.id]">
+
+                <div>
+                    <p style="padding-left: 10px;">
+                        <strong>Książka: </strong><span>{{book.name}}</span>
+                    </p>
+                    <p style="padding-left: 10px;">
+                      <strong>Autor: </strong><span>{{book.author}}</span>
+                  </p>
+                  <p style="padding-left: 10px;">
+                      <strong>Data wydania: </strong><span>{{book.releaseDate | date:'yyyy-MM-dd'}}</span>
+                  </p>
+                  <p style="padding-left: 10px;">
+                      <strong>Opis: </strong><span>{{book.description}}</span>
+                  </p>
+
+                </div>
+            </a>
+            <a [routerLink]="['/reservations/', book.id]">
+            <p style="padding-left: 10px;">
+              Rezerwacja
+          </p>
+        </a>
+    </div>
+</div>
+
+<div class="inner-outlet">
+    <router-outlet></router-outlet>
+</div>

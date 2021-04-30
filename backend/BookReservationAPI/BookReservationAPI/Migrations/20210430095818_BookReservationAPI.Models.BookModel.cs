@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace BookReservationAPI.Migrations
 {
-    public partial class BookReservationAPIModelsBookContext : Migration
+    public partial class BookReservationAPIModelsBookModel : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

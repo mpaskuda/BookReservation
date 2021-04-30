@@ -49,7 +49,7 @@ namespace BookReservationAPI.Controllers
             _dataRepository.Add(book);
             return CreatedAtRoute(
                   "Get",
-                  
+                  new { Id = book.Id },
                   book);
         }
         // PUT: api/BookModel/5

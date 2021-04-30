@@ -10,7 +10,7 @@ export class HttpService {
 
   constructor(private httpService: HttpClient) { }
 
-  public getBooks = (route: string) => {
+  public getData = (route: string) => {
     return this.httpService.get(route);
   }
 
@@ -19,6 +19,10 @@ export class HttpService {
   }
 
   public addReservation = (route: string, body: Reservations) => {
+    return this.httpService.post(route, body);
+  }
+
+  public updateBook = (route: string, body: Books) => {
     return this.httpService.post(route, body);
   }
 }

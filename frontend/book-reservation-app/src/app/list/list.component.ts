@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Books } from '../Interfaces/book';
+import { HttpService } from '../services/http.service';
 
 @Component({
   selector: 'app-list',
@@ -7,9 +9,25 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ListComponent implements OnInit {
 
-  constructor() { }
+  public books: Books[];
 
-  ngOnInit() {
+  constructor(private httpService: HttpService) {
+
+   }
+  ngOnInit(): void {
+    this.getBooks();
   }
 
+  public getBooks = () => {
+    console.log('making request');
+    let route: string = 'https://localhost:44330/api/book';
+    this.httpService.getData(route)
+      .subscribe((result) => {
+        this.books = result as Books[];
+        console.log(this.books);
+      },
+        (error) => {
+          console.error(error);
+        });
+  }
 }
