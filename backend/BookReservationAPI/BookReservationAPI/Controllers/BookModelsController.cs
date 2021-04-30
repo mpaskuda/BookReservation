@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using BookReservationAPI.DatabaseContext;
 using BookReservationAPI.Models;
+using BookReservationAPI.Repository;
 
 namespace BookReservationAPI.Controllers
 {
@@ -14,97 +15,70 @@ namespace BookReservationAPI.Controllers
     [ApiController]
     public class BookModelsController : ControllerBase
     {
-        private readonly BookContext _context;
-
-        public BookModelsController(BookContext context)
+        private readonly IBookRepository<BookModel> _dataRepository;
+        public BookModelsController(IBookRepository<BookModel> dataRepository)
         {
-            _context = context;
+            _dataRepository = dataRepository;
         }
-
-        // GET: api/BookModels
+        // GET: api/BookModel
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<BookModel>>> GetBooks()
+        public IActionResult Get()
         {
-            return await _context.Books.ToListAsync();
+            IEnumerable<BookModel> books = _dataRepository.GetAll();
+            return Ok(books);
         }
-
-        // GET: api/BookModels/5
+        // GET: api/BookModel/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<BookModel>> GetBookModel(int id)
+        public IActionResult Get(int id)
         {
-            var bookModel = await _context.Books.FindAsync(id);
-
-            if (bookModel == null)
+            BookModel book = _dataRepository.Get(id);
+            if (book == null)
             {
-                return NotFound();
+                return NotFound("The BookModel record couldn't be found.");
             }
-
-            return bookModel;
+            return Ok(book);
         }
-
-        // PUT: api/BookModels/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for
-        // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutBookModel(int id, BookModel bookModel)
+        // POST: api/BookModel
+        [HttpPost]
+        public IActionResult Post([FromBody] BookModel book)
         {
-            if (id != bookModel.Id)
+            if (book == null)
             {
-                return BadRequest();
+                return BadRequest("BookModel is null.");
             }
-
-            _context.Entry(bookModel).State = EntityState.Modified;
-
-            try
+            _dataRepository.Add(book);
+            return CreatedAtRoute(
+                  "Get",
+                  
+                  book);
+        }
+        // PUT: api/BookModel/5
+        [HttpPut("{id}")]
+        public IActionResult Put(int id, [FromBody] BookModel book)
+        {
+            if (book == null)
             {
-                await _context.SaveChangesAsync();
+                return BadRequest("BookModel is null.");
             }
-            catch (DbUpdateConcurrencyException)
+            BookModel bookToUpdate = _dataRepository.Get(id);
+            if (bookToUpdate == null)
             {
-                if (!BookModelExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+                return NotFound("The BookModel record couldn't be found.");
             }
-
+            _dataRepository.Update(bookToUpdate, book);
             return NoContent();
         }
-
-        // POST: api/BookModels
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for
-        // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
-        [HttpPost]
-        public async Task<ActionResult<BookModel>> PostBookModel(BookModel bookModel)
-        {
-            _context.Books.Add(bookModel);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetBookModel", new { id = bookModel.Id }, bookModel);
-        }
-
-        // DELETE: api/BookModels/5
+        // DELETE: api/BookModel/5
         [HttpDelete("{id}")]
-        public async Task<ActionResult<BookModel>> DeleteBookModel(int id)
+        public IActionResult Delete(int id)
         {
-            var bookModel = await _context.Books.FindAsync(id);
-            if (bookModel == null)
+            BookModel book = _dataRepository.Get(id);
+            if (book == null)
             {
-                return NotFound();
+                return NotFound("The BookModel record couldn't be found.");
             }
-
-            _context.Books.Remove(bookModel);
-            await _context.SaveChangesAsync();
-
-            return bookModel;
-        }
-
-        private bool BookModelExists(int id)
-        {
-            return _context.Books.Any(e => e.Id == id);
+            _dataRepository.Delete(book);
+            return NoContent();
         }
     }
 }

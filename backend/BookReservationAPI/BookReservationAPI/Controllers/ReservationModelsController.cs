@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using BookReservationAPI.DatabaseContext;
 using BookReservationAPI.Models;
+using BookReservationAPI.Repository;
 
 namespace BookReservationAPI.Controllers
 {
@@ -14,97 +15,70 @@ namespace BookReservationAPI.Controllers
     [ApiController]
     public class ReservationModelsController : ControllerBase
     {
-        private readonly ReservationContext _context;
-
-        public ReservationModelsController(ReservationContext context)
+        private readonly IReservationRepository<ReservationModel> _dataRepository;
+        public ReservationModelsController(IReservationRepository<ReservationModel> dataRepository)
         {
-            _context = context;
+            _dataRepository = dataRepository;
         }
-
-        // GET: api/ReservationModels
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<ReservationModel>>> GetReservations()
-        {
-            return await _context.Reservations.ToListAsync();
-        }
-
-        // GET: api/ReservationModels/5
+        // GET: api/ReservationModel
         [HttpGet("{id}")]
-        public async Task<ActionResult<ReservationModel>> GetReservationModel(int id)
+        public IActionResult Get(int id)
         {
-            var reservationModel = await _context.Reservations.FindAsync(id);
-
-            if (reservationModel == null)
-            {
-                return NotFound();
-            }
-
-            return reservationModel;
+            IEnumerable<ReservationModel> reservations = _dataRepository.GetAll(id);
+            return Ok(reservations);
         }
-
-        // PUT: api/ReservationModels/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for
-        // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutReservationModel(int id, ReservationModel reservationModel)
+        // GET: api/ReservationModel/5
+        [HttpGet("{id}/{id2}")]
+        public IActionResult Get(int id,int id2)
         {
-            if (id != reservationModel.UserID)
+            ReservationModel reservations = _dataRepository.Get(id,id2);
+            if (reservations == null)
             {
-                return BadRequest();
+                return NotFound("The ReservationModel record couldn't be found.");
             }
-
-            _context.Entry(reservationModel).State = EntityState.Modified;
-
-            try
+            return Ok(reservations);
+        }
+        // POST: api/ReservationModel
+        [HttpPost]
+        public IActionResult Post([FromBody] ReservationModel reservation)
+        {
+            if (reservation == null)
             {
-                await _context.SaveChangesAsync();
+                return BadRequest("ReservationModel is null.");
             }
-            catch (DbUpdateConcurrencyException)
+            _dataRepository.Add(reservation);
+            return CreatedAtRoute(
+                  "Get",
+                  new { Id = reservation.BookID },
+                  reservation);
+        }
+        // PUT: api/ReservationModel/5
+        [HttpPut]
+        public IActionResult Put([FromBody] ReservationModel reservation)
+        {
+            if (reservation == null)
             {
-                if (!ReservationModelExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+                return BadRequest("ReservationModel is null.");
             }
-
+            ReservationModel reservationToUpdate = _dataRepository.Get(reservation.BookID,reservation.UserID);
+            if (reservationToUpdate == null)
+            {
+                return NotFound("The ReservationModel record couldn't be found.");
+            }
+            _dataRepository.Update(reservationToUpdate, reservation);
             return NoContent();
         }
-
-        // POST: api/ReservationModels
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for
-        // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
-        [HttpPost]
-        public async Task<ActionResult<ReservationModel>> PostReservationModel(ReservationModel reservationModel)
+        // DELETE: api/ReservationModel/5
+        [HttpDelete("{id}/{id2}")]
+        public IActionResult Delete(int id,int id2)
         {
-            _context.Reservations.Add(reservationModel);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetReservationModel", new { id = reservationModel.UserID }, reservationModel);
-        }
-
-        // DELETE: api/ReservationModels/5
-        [HttpDelete("{id}")]
-        public async Task<ActionResult<ReservationModel>> DeleteReservationModel(int id)
-        {
-            var reservationModel = await _context.Reservations.FindAsync(id);
-            if (reservationModel == null)
+            ReservationModel reservation = _dataRepository.Get(id,id2);
+            if (reservation == null)
             {
-                return NotFound();
+                return NotFound("The ReservationModel record couldn't be found.");
             }
-
-            _context.Reservations.Remove(reservationModel);
-            await _context.SaveChangesAsync();
-
-            return reservationModel;
-        }
-
-        private bool ReservationModelExists(int id)
-        {
-            return _context.Reservations.Any(e => e.UserID == id);
+            _dataRepository.Delete(reservation);
+            return NoContent();
         }
     }
 }

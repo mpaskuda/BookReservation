@@ -26,14 +26,14 @@ namespace BookReservationAPI.Repository
             _reservsationContext.SaveChanges();
         }
 
-        public ReservationModel Get(int id)
+        public ReservationModel Get(int id, int id2)
         {
-            return _reservsationContext.Reservations.FirstOrDefault(a => a.UserID == id);
+            return _reservsationContext.Reservations.Where(a => a.BookID == id).FirstOrDefault(b => b.UserID == id2);
         }
 
-        public IEnumerable<ReservationModel> GetAll()
+        public IEnumerable<ReservationModel> GetAll(int id)
         {
-            return _reservsationContext.Reservations.ToList();
+            return _reservsationContext.Reservations.Where(a => a.BookID == id).ToList();
         }
 
     public void Update(ReservationModel dbEntity, ReservationModel entity)

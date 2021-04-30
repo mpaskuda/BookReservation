@@ -4,8 +4,8 @@ namespace BookReservationAPI.Repository
 {
     public interface IReservationRepository<TEntity>
     {
-        IEnumerable<TEntity> GetAll();
-        TEntity Get(int id);
+        IEnumerable<TEntity> GetAll(int id);
+        TEntity Get(int id,int id2);
         void Add(TEntity entity);
         void Update(TEntity dbEntity, TEntity entity);
         void Delete(TEntity entity);
