@@ -20,7 +20,7 @@ export class AuthenticationService {
     }
 
     login(username: string, password: string) {
-        return this.http.post<any>(`https://localhost:44330/user/authenticate`, { username, password })
+        return this.http.post<any>(`https://localhost:44330/user`, { username, password })
             .pipe(map(user => {
                 if (user) {
                     localStorage.setItem('currentUser', JSON.stringify(user));

@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { Books } from '../Interfaces/book';
+import { User } from '../Interfaces/user';
+import { AuthenticationService } from '../services/authentication.service';
 import { HttpService } from '../services/http.service';
 
 @Component({
@@ -10,10 +13,18 @@ import { HttpService } from '../services/http.service';
 export class ListComponent implements OnInit {
 
   public books: Books[];
+  currentUserSubscription: Subscription;
+  public authenticationService: AuthenticationService;
+  currentUser: User;
+  value: number;
 
   constructor(private httpService: HttpService) {
+    // this.currentUserSubscription = this.authenticationService.currentUser.subscribe(user => {
+    //     this.currentUser = user;
+    // });
 
-   }
+    // this.value=0;
+}
   ngOnInit(): void {
     this.getBooks();
   }
