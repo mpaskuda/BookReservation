@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BookReservationAPI.Migrations.Reservation
 {
     [DbContext(typeof(ReservationContext))]
-    [Migration("20210430100019_BookReservationAPI.Models.ReservationModel")]
-    partial class BookReservationAPIModelsReservationModel
+    [Migration("20210501000926_BookReservationAPI.Model.ReservationContextSeed")]
+    partial class BookReservationAPIModelReservationContextSeed
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -23,7 +23,7 @@ namespace BookReservationAPI.Migrations.Reservation
 
             modelBuilder.Entity("BookReservationAPI.Models.ReservationModel", b =>
                 {
-                    b.Property<int>("UserID")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
@@ -34,22 +34,27 @@ namespace BookReservationAPI.Migrations.Reservation
                     b.Property<DateTime>("ReservationDate")
                         .HasColumnType("datetime2");
 
-                    b.HasKey("UserID");
+                    b.Property<int>("UserID")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
 
                     b.ToTable("Reservations");
 
                     b.HasData(
                         new
                         {
-                            UserID = 1,
+                            Id = 1,
                             BookID = 1,
-                            ReservationDate = new DateTime(2012, 1, 2, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                            ReservationDate = new DateTime(2012, 1, 2, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            UserID = 1
                         },
                         new
                         {
-                            UserID = 2,
+                            Id = 2,
                             BookID = 2,
-                            ReservationDate = new DateTime(2010, 3, 24, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                            ReservationDate = new DateTime(2010, 3, 24, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            UserID = 2
                         });
                 });
 #pragma warning restore 612, 618

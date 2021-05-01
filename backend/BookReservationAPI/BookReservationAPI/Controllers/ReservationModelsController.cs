@@ -16,6 +16,7 @@ namespace BookReservationAPI.Controllers
     public class ReservationModelsController : ControllerBase
     {
         private readonly IReservationRepository<ReservationModel> _dataRepository;
+        private IEnumerable<ReservationModel> reservations2;
         public ReservationModelsController(IReservationRepository<ReservationModel> dataRepository)
         {
             _dataRepository = dataRepository;
@@ -29,9 +30,9 @@ namespace BookReservationAPI.Controllers
         }
         // GET: api/ReservationModel/5
         [HttpGet("{id}/{id2}")]
-        public IActionResult Get(int id,int id2)
+        public IActionResult Get(int id, int id2)
         {
-            ReservationModel reservations = _dataRepository.Get(id,id2);
+            ReservationModel reservations = _dataRepository.Get(id, id2);
             if (reservations == null)
             {
                 return NotFound("The ReservationModel record couldn't be found.");
@@ -60,7 +61,7 @@ namespace BookReservationAPI.Controllers
             {
                 return BadRequest("ReservationModel is null.");
             }
-            ReservationModel reservationToUpdate = _dataRepository.Get(reservation.BookID,reservation.UserID);
+            ReservationModel reservationToUpdate = _dataRepository.Get(reservation.BookID, reservation.UserID);
             if (reservationToUpdate == null)
             {
                 return NotFound("The ReservationModel record couldn't be found.");
@@ -70,9 +71,9 @@ namespace BookReservationAPI.Controllers
         }
         // DELETE: api/ReservationModel/5
         [HttpDelete("{id}/{id2}")]
-        public IActionResult Delete(int id,int id2)
+        public IActionResult Delete(int id, int id2)
         {
-            ReservationModel reservation = _dataRepository.Get(id,id2);
+            ReservationModel reservation = _dataRepository.Get(id, id2);
             if (reservation == null)
             {
                 return NotFound("The ReservationModel record couldn't be found.");

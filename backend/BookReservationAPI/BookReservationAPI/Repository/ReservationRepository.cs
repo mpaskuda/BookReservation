@@ -36,12 +36,12 @@ namespace BookReservationAPI.Repository
             return _reservsationContext.Reservations.Where(a => a.BookID == id).ToList();
         }
 
-    public void Update(ReservationModel dbEntity, ReservationModel entity)
-    {
-        dbEntity.UserID = entity.UserID;
-        dbEntity.BookID = entity.BookID;
-        dbEntity.ReservationDate = entity.ReservationDate;
-        _reservsationContext.SaveChanges();
+        public void Update(ReservationModel dbEntity, ReservationModel entity)
+        {
+            dbEntity.UserID = entity.UserID;
+            dbEntity.BookID = entity.BookID;
+            dbEntity.ReservationDate = entity.ReservationDate;
+            _reservsationContext.SaveChanges();
+        }
     }
-}
 }

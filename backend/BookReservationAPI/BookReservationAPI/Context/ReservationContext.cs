@@ -19,6 +19,7 @@ namespace BookReservationAPI.DatabaseContext
             modelBuilder.Entity<ReservationModel>().HasData(
                 new ReservationModel
                 {
+                    Id=1,
                     UserID = 1,
                     BookID = 1,
 
@@ -28,6 +29,7 @@ namespace BookReservationAPI.DatabaseContext
                 },
                 new ReservationModel
                 {
+                    Id = 2,
                     UserID = 2,
                     BookID = 2,
 

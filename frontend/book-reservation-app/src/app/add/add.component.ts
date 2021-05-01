@@ -11,25 +11,25 @@ import { FormsModule } from '@angular/forms';
 })
 export class AddComponent  {
   public book: Books;
-  date2: any;
+  date: any;
    public name:any;
   constructor(private httpService: HttpService) {
-    this.date2= formatDate(new Date(), 'yyyy/MM/dd', 'en');
+    this.date= formatDate(new Date(), 'yyyy/MM/dd', 'en');
     this.book = {
       name: "", 
       author: "", 
       description: "", 
-      releaseDate: this.date2
+      releaseDate: this.date
     };
   }
 
 
 
-  public addCar = () => {
+  public addBook = () => {
     let route: string = 'https://localhost:44330/api/book';
     this.httpService.addBook(route, this.book)
       .subscribe((result) => {
-        alert("udało się all")
+        alert("udało się")
       },
         (error) => {
           console.error(error);
@@ -37,6 +37,6 @@ export class AddComponent  {
   }
   onSubmit() {
     console.log("poszlo");
-    this.addCar();
+    this.addBook();
   }
 }

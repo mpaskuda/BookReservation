@@ -31,6 +31,11 @@ namespace BookReservationAPI.Repository
             return _userContext.Users.FirstOrDefault(a => a.Id == id);
         }
 
+        public UserModel Auth(string aaa, string bbb)
+        {
+            return _userContext.Users.Where(a => a.Username == aaa).FirstOrDefault(b => b.Password == bbb);
+        }
+
         public IEnumerable<UserModel> GetAll()
         {
             return _userContext.Users.ToList();

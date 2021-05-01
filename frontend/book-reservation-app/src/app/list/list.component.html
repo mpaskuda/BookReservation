@@ -1,9 +1,10 @@
-<p>Lista książek</p>
 <a [routerLink]="['/add/']">
     <p style="padding-left: 10px;">
         Dodaj książkę
     </p>
 </a>
+
+<p>Lista książek</p>
 <div class="overview-container">
     <div *ngFor="let book of books">
 
@@ -30,9 +31,7 @@
                 Rezerwacje
             </p>
         </a>
-        <p style="padding-left: 10px;">
-            Rezerwuj
-        </p>
+        <button class="btn btn-primary" (click)="addReservation(book.id)">Rezerwuj książke</button>
 
     </div>
 </div>

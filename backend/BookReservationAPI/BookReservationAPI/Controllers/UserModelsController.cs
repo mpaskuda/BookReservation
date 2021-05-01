@@ -47,6 +47,22 @@ namespace UserReservationAPI.Controllers
                   new { Id = User.Id },
                   User);
         }
+        [Route("/auth")]
+        [HttpPost]
+        public IActionResult Post2([FromBody] UserModel User)
+        {
+            if (User == null)
+            {
+                return BadRequest("UserModel is null.");
+            }
+            var r = _dataRepository.GetAll();
+
+            foreach (var item in r)
+            {
+                if (User.Username == item.Username && User.Password == item.Password) return Ok(item);
+            }
+            return BadRequest("UserModel is null.");
+        }
         // PUT: api/UserModel/5
         [HttpPut("{id}")]
         public IActionResult Put(int id, [FromBody] UserModel User)

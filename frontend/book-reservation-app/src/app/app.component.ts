@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { User } from './Interfaces/user';
+import { Users } from './Interfaces/user';
 import { AuthenticationService } from './services/authentication.service';
 
 @Component({
@@ -10,7 +10,7 @@ import { AuthenticationService } from './services/authentication.service';
 })
 export class AppComponent {
   title = 'book-reservation-app';
-  currentUser: User;
+  currentUser: Users;
 
   constructor(
       private router: Router,

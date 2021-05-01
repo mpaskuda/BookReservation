@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { first } from 'rxjs/operators';
 import { AuthenticationService, } from '../services/authentication.service';
 import { HttpService } from '../services/http.service';
+import { Users } from '../Interfaces/user';
 
 
 @Component({templateUrl: 'register.component.html'})
@@ -11,6 +12,7 @@ export class RegisterComponent implements OnInit {
     registerForm: FormGroup;
     loading = false;
     submitted = false;
+    public user: Users;
 
     constructor(
         private formBuilder: FormBuilder,
@@ -18,9 +20,17 @@ export class RegisterComponent implements OnInit {
         private authenticationService: AuthenticationService,
         private httpservice: HttpService
     ) { 
+        this.user = {
+            id: 0,
+            firstName: "", 
+            lastName: "", 
+            username: "", 
+            password: ""
+          };
         if (this.authenticationService.currentUserValue) { 
             this.router.navigate(['/']);
         }
+
     }
 
     ngOnInit() {
@@ -42,7 +52,8 @@ export class RegisterComponent implements OnInit {
         }
 
         this.loading = true;
-        this.httpservice.register('https://localhost:44330/user',this.registerForm.value)
+        // this.user.firstName = this.registerForm.value('firstName');
+        this.httpservice.register('https://localhost:44330/api/user',this.registerForm.value)
             .pipe(first())
             .subscribe(
                 data => {

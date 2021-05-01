@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http'
 import { Books } from '../Interfaces/book';
 import { Reservations } from '../Interfaces/reservation';
-import { User } from '../Interfaces/user';
+import { Users } from '../Interfaces/user';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +12,7 @@ export class HttpService {
 
   constructor(private httpService: HttpClient) { }
 
-  public register = (route: string, body: User) => {
+  public register = (route: string, body: Users) => {
     return this.httpService.post(route,body);
   }
   public getData = (route: string) => {

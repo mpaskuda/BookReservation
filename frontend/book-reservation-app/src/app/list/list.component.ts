@@ -1,7 +1,10 @@
+import { formatDate } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { Books } from '../Interfaces/book';
-import { User } from '../Interfaces/user';
+import { Reservations } from '../Interfaces/reservation';
+import { Users } from '../Interfaces/user';
+import { ReservationsComponent } from '../reservations/reservations.component';
 import { AuthenticationService } from '../services/authentication.service';
 import { HttpService } from '../services/http.service';
 
@@ -15,15 +18,14 @@ export class ListComponent implements OnInit {
   public books: Books[];
   currentUserSubscription: Subscription;
   public authenticationService: AuthenticationService;
-  currentUser: User;
+  currentUser: Users;
   value: number;
+  date: any;
+  dateString: string;
+  reservation: Reservations;
 
   constructor(private httpService: HttpService) {
-    // this.currentUserSubscription = this.authenticationService.currentUser.subscribe(user => {
-    //     this.currentUser = user;
-    // });
-
-    // this.value=0;
+    this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
 }
   ngOnInit(): void {
     this.getBooks();
@@ -36,6 +38,31 @@ export class ListComponent implements OnInit {
       .subscribe((result) => {
         this.books = result as Books[];
         console.log(this.books);
+      },
+        (error) => {
+          console.error(error);
+        });
+  }
+
+  public addReservation(id : number){
+
+    var a = id;
+    var b = this.currentUser.id;
+    this.date = formatDate(new Date(), 'yyyy-MM-dd', 'en');
+    this.dateString = this.date;
+    this.reservation = {
+      userID: b, 
+      bookID: a,
+      reservationDate: this.date
+    };
+    this.addReservationToDatabase();
+  }
+
+  public addReservationToDatabase = () => {
+    let route: string = 'https://localhost:44330/api/reservation';
+    this.httpService.addReservation(route, this.reservation)
+      .subscribe((result) => {
+        alert("udało się")
       },
         (error) => {
           console.error(error);
